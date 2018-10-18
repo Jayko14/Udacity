@@ -1,5 +1,5 @@
-# Udacity
-#Chapter 1, Lesson 19
+# Chapter 1
+## Chapter 1, Lesson 19
 Q1) 
 SELECT id, occurred_at, total_amt_usd FROM orders
 ORDER BY occurred_at 
@@ -26,7 +26,7 @@ FROM orders
 ORDER BY occurred_at, total_amt_usd
 Limit 10
 
-### Chapter 1, Lesson 25
+## Chapter 1, Lesson 25
 Q1) 
 SELECT * 
 FROM orders
@@ -38,13 +38,13 @@ FROM orders
 WHERE total_amt_usd < 500
 LIMIT 10;
 
-#### Chapter 1, Lesson 28
+## Chapter 1, Lesson 28
 Q1) 
 SELECT name, website, primary_poc
 FROM accounts
 WHERE name = 'Exxon Mobil';
 
-##### Chapter 1, Lesson 31
+## Chapter 1, Lesson 31
 Q1)
 SELECT standard_amt_usd/standard_qty AS standard_cost, id, account_id
 FROM orders
@@ -53,7 +53,7 @@ Q2)
 SELECT id, account_id, (gloss_amt_usd/total_amt_usd)*100 AS pct_rvu
 FROM orders
 
-###### Chapter 1, Lesson 35
+## Chapter 1, Lesson 35
 Q1) 
 SELECT * 
 FROM accounts
@@ -67,7 +67,7 @@ SELECT *
 FROM accounts
 WHERE name LIKE '%s';
 
-########## Chapter 1, Lesson 38
+## Chapter 1, Lesson 38
 Q1)
 SELECT name, primary_poc, sales_rep_id
 FROM accounts
@@ -77,7 +77,7 @@ SELECT *
 FROM web_events
 WHERE channel IN ('organic', 'adwords');
 
-###### Chapter 1, Lesson 41
+## Chapter 1, Lesson 41
 Q1)
 SELECT name, primary_poc, sales_rep_id
 FROM accounts
@@ -99,7 +99,7 @@ SELECT *
 FROM accounts
 WHERE name NOT LIKE '%s';
 
-#### Chapter 1, Lesson 44
+## Chapter 1, Lesson 44
 Q1)
 SELECT *
 FROM orders
@@ -114,7 +114,7 @@ FROM web_events
 WHERE channel IN ('organic', 'adwords') AND occurred_at BETWEEN '2016-01-01' AND '2017-01-01'
 ORDER BY occurred_at DESC;
 
-###### Chapter 1, Lesson 47
+## Chapter 1, Lesson 47
 Q1)
 SELECT id
 FROM orders
