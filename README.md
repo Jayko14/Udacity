@@ -128,7 +128,101 @@ SELECT name, primary_poc
 FROM accounts
 WHERE (name LIKE 'C%' OR name LIKE 'W%') AND (primary_poc LIKE '%ana%' OR primary_poc LIKE'Ana%') AND (primary_poc NOT LIKE '%eana%');
  
+# Chapter 2
+## Chapter 2, Lesson 12
+Q1)
+SELECT a.name, a.primary_poc, w.occurred_at, w.channel
+FROM web_events w
+JOIN accounts a
+ON w.account_id = a.id 
+WHERE name = 'Walmart';
+Q2)
+SELECT acc.name, acc.sales_rep_id, sal.region_id
+FROM accounts acc
+JOIN sales_reps sal
+ON acc.sales_rep_id = sal.id
+ORDER BY acc.name;
+Q3)
+SELECT reg.name as region, acc.name, (ord.total_amt_usd/(ord.total+0.01)) AS unit_price
+FROM accounts acc
+JOIN sales_reps sal
+ON acc.sales_rep_id = sal.id
+JOIN orders ord
+ON acc.id = ord.account_id
+JOIN region reg
 
+## Chapter 2, Final boss
+Q1)
+SELECT a.name, s.name as sales, r.name as region
+FROM accounts a
+JOIN sales_reps s
+ON a.sales_rep_id = s.id
+JOIN region r
+ON s.region_id = r.id
+WHERE r.name = 'Midwest'
+ORDER BY a.name 
+Q2)
+SELECT a.name, s.name as sales, r.name as region
+FROM accounts a
+JOIN sales_reps s
+ON a.sales_rep_id = s.id
+JOIN region r 
+ON s.region_id = r.id
+WHERE r.name = 'Midwest' AND s.name LIKE 'S%'
+ORDER BY a.name 
+Q3)
+SELECT a.name, s.name as sales, r.name as region
+FROM accounts a
+JOIN sales_reps s
+ON a.sales_rep_id = s.id
+JOIN region r 
+ON s.region_id = r.id
+WHERE r.name = 'Midwest' AND s.name LIKE '% K%'
+ORDER BY a.name 
+Q4)
+SELECT r.name as region, a.name, (o.total_amt_usd/(o.total+0.01)) unit_price
+FROM accounts a
+JOIN sales_reps s
+ON a.sales_rep_id = s.id
+JOIN region r
+ON s.region_id = r.id
+JOIN orders o
+ON o.account_id = a.id
+WHERE o.standard_qty >100;
+Q5)
+SELECT r.name as region, a.name, (o.total_amt_usd/(o.total+0.01)) unit_price
+FROM accounts a
+JOIN sales_reps s
+ON a.sales_rep_id = s.id
+JOIN region r
+ON s.region_id = r.id
+JOIN orders o
+ON o.account_id = a.id
+WHERE o.standard_qty >100 AND o.poster_qty >50
+ORDER BY unit_price;
+Q6)
+SELECT r.name as region, a.name, (o.total_amt_usd/(o.total+0.01)) unit_price
+FROM accounts a
+JOIN sales_reps s
+ON a.sales_rep_id = s.id
+JOIN region r
+ON s.region_id = r.id
+JOIN orders o
+ON o.account_id = a.id
+WHERE o.standard_qty >100 AND o.poster_qty >50
+ORDER BY unit_price DESC;
+Q7)
+SELECT DISTINCT a.name, w.channel
+FROM accounts a
+JOIN web_events w
+ON w.account_id = a.id
+WHERE a.id = 1001;
+Q8)
+SELECT a.name, o.occurred_at, o.total, o.total_amt_usd
+FROM accounts a
+JOIN orders o
+ON o.account_id = a.id
+where o.occurred_at BETWEEN '2015-01-01' AND '2016-01-01';
 
 
 
