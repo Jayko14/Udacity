@@ -270,3 +270,109 @@ ON s.region_id = r.id
 GROUP BY region
 ORDER BY count;
 
+## Chapter 3, Lesson 17
+Q1)
+SELECT a.name, AVG(o.standard_qty) average_standard, AVG(o.gloss_qty) average_gloss, AVG(o.poster_qty) average_poster
+FROM orders o
+JOIN accounts a
+ON a.id = o.id
+GROUP BY a.name;
+Q2)
+SELECT a.name, AVG(o.standard_amt_usd) average_standard, AVG(o.gloss_amt_usd) average_gloss, AVG(o.poster_amt_usd) average_poster
+FROM orders o
+JOIN accounts a
+ON a.id = o.id
+GROUP BY a.name;
+Q3)
+SELECT w.channel, s.name, COUNT(*) occ
+FROM sales_reps s
+JOIN accounts a
+ON s.id = a.sales_rep_id
+JOIN web_events w 
+ON w.account_id = a.id
+GROUP BY w.channel, s.name
+ORDER BY occ DESC;
+Q4)
+SELECT w.channel, r.name region, COUNT(*) occ
+FROM sales_reps s
+JOIN accounts a
+ON s.id = a.sales_rep_id
+JOIN web_events w 
+ON w.account_id = a.id
+JOIN region r
+ON r.id = s.region_id
+GROUP BY w.channel, r.name
+ORDER BY occ DESC;
+
+## Chapter 3, Lesson 23
+Q1) 
+SELECT s.name sales, COUNT(*) mng
+FROM accounts a
+JOIN sales_reps s
+ON s.id = a.sales_rep_id
+GROUP BY s.name
+HAVING COUNT(*) >5
+ORDER BY COUNT(*)
+Q2)
+SELECT account_id, COUNT(*)
+FROM orders
+GROUP BY account_id
+HAVING COUNT(*) > 20;
+Q3)
+SELECT o.account_id, a.name, COUNT(*)
+FROM orders o
+JOIN accounts a
+ON a.id = o.account_id
+GROUP BY o.account_id, a.name
+HAVING COUNT(*) > 20
+ORDER BY COUNT(*) DESC;
+Q4)
+SELECT o.total_amt_usd, a.name
+FROM orders o
+JOIN accounts a
+ON a.id = o.account_id
+GROUP BY a.name, o.total_amt_usd
+HAVING o.total_amt_usd > 30000;
+Q5)
+SELECT o.total_amt_usd, a.name
+FROM orders o
+JOIN accounts a
+ON a.id = o.account_id
+GROUP BY a.name, o.total_amt_usd
+HAVING o.total_amt_usd < 1000;
+Q6)
+SELECT sum(o.total_amt_usd), a.name
+FROM orders o
+JOIN accounts a
+ON a.id = o.account_id
+GROUP BY a.name
+ORDER BY sum(o.total_amt_usd) DESC; 
+Q7)
+SELECT sum(o.total_amt_usd), a.name
+FROM orders o
+JOIN accounts a
+ON a.id = o.account_id
+GROUP BY a.name
+ORDER BY sum(o.total_amt_usd); 
+Q8)
+SELECT a.name, w.channel, COUNT(*) AS contact
+FROM accounts a
+JOIN web_events w
+ON a.id = w.account_id
+GROUP BY a.name, w.channel
+HAVING w.channel = 'facebook' AND COUNT(*) >6;
+Q9)
+SELECT a.name, w.channel, COUNT(*) AS contact
+FROM accounts a
+JOIN web_events w
+ON a.id = w.account_id
+GROUP BY a.name, w.channel
+HAVING w.channel = 'facebook' AND COUNT(*) >6
+ORDER BY COUNT(*) DESC;
+Q10)
+SELECT a.name, w.channel, COUNT(w.channel) AS times
+FROM accounts a
+JOIN web_events w
+ON a.id = w.account_id
+GROUP BY a.name, w.channel
+ORDER BY COUNT(w.channel) DESC;
