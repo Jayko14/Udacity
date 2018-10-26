@@ -224,6 +224,49 @@ JOIN orders o
 ON o.account_id = a.id
 where o.occurred_at BETWEEN '2015-01-01' AND '2016-01-01';
 
-
-
+## Chapter 3, lesson 14
+Q1) 
+SELECT a.name, o.occurred_at 
+FROM orders o
+JOIN accounts a
+ON o.id = a.id
+ORDER BY o.occurred_at;
+Q2)
+SELECT a.name, SUM(o.total_amt_usd)
+FROM orders o
+JOIN accounts a
+ON o.id = a.id
+GROUP BY a.name;
+Q3)
+SELECT a.name, o.occurred_at AS OCC, w.channel, w.occurred_at
+FROM orders o
+JOIN accounts a
+ON o.id = a.id
+JOIN web_events w
+ON o.id = w.id
+ORDER BY w.occurred_at DESC;
+Q4) 
+SELECT channel, COUNT(channel)
+FROM web_events
+GROUP BY channel;
+Q5)
+SELECT a.primary_poc, w.occurred_at
+FROM accounts a
+JOIN web_events w
+ON w.id = a.id
+ORDER BY occurred_at;
+Q6)
+SELECT a.name, o.total_amt_usd
+FROM accounts a
+JOIN orders o
+ON o.id = a.id
+GROUP BY a.name
+ORDER BY total_amt_usd;
+Q7)
+SELECT COUNT(s.name), r.name AS region
+FROM region r
+JOIN sales_reps s
+ON s.region_id = r.id
+GROUP BY region
+ORDER BY count;
 
