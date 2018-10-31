@@ -376,3 +376,44 @@ JOIN web_events w
 ON a.id = w.account_id
 GROUP BY a.name, w.channel
 ORDER BY COUNT(w.channel) DESC;
+
+##Chapter 3, Lesson 31
+Q1) 
+SELECT a.name, SUM(total_amt_usd) total_spent,	 
+	CASE WHEN SUM(total_amt_usd) > 200000 THEN 'Top' 
+	WHEN SUM(total_amt_usd) < 200000 AND SUM(total_amt_usd) > 100000 THEN 'Middle' 
+	ELSE 'Low' END AS Membership
+FROM orders o
+JOIN accounts a
+ON o.account_id = a.id
+GROUP BY a.name
+ORDER BY total_spent DESC;
+Q2)
+SELECT a.name, SUM(total_amt_usd) total_spent, 	 
+	CASE WHEN SUM(total_amt_usd) > 200000 THEN 'Top' 
+	WHEN SUM(total_amt_usd) < 200000 AND SUM(total_amt_usd) > 100000 THEN 'Middle' 
+	ELSE 'Low' END AS Membership
+FROM orders o
+JOIN accounts a
+ON o.account_id = a.id
+WHERE o.occurred_at > '2015-12-31'
+GROUP BY a.name
+ORDER BY total_spent DESC;
+Q3)
+SELECT s.name rep_name, count(*), CASE WHEN count(*) > 200 THEN 'top' ELSE 'not' END AS sales_rep_tier
+FROM sales_reps s
+JOIN accounts a
+ON s.id = a.sales_rep_id
+JOIN orders o
+ON a.id = o.account_id
+GROUP BY s.name
+ORDER BY 2 DESC;
+Q4)
+SELECT s.name rep_name, SUM(o.total_amt_usd), count(*), CASE WHEN count(*) > 200 OR sum(o.total_amt_usd) > 750000 THEN 'top' WHEN count(*) > 150 OR SUM(o.total_amt_usd) > 500000 THEN 'mid' ELSE 'low' END AS sales_rep_tier
+FROM sales_reps s
+JOIN accounts a
+ON s.id = a.sales_rep_id
+JOIN orders o
+ON a.id = o.account_id
+GROUP BY s.name
+ORDER BY 2 DESC;
