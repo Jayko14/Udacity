@@ -417,3 +417,108 @@ JOIN orders o
 ON a.id = o.account_id
 GROUP BY s.name
 ORDER BY 2 DESC;
+
+#Chapter 4 
+##Chapter 4, Lesson 10
+Q1) 
+SELECT t3.rep_name , t2.region, t2.max 
+FROM(
+SELECT region, MAX(total_amt) max
+FROM (
+SELECT s.name rep_name, r.name region, SUM(o.total_amt_usd) total_amt                     
+FROM region r
+JOIN sales_reps s
+ON r.id = s.region_id
+JOIN accounts a
+ON s.id = a.sales_rep_id
+JOIN orders o
+ON a.id = o.account_id
+GROUP BY 1,2) t1
+GROUP BY 1) t2
+JOIN (
+  SELECT s.name rep_name, r.name region, SUM(o.total_amt_usd) total_amt                     
+FROM region r
+JOIN sales_reps s
+ON r.id = s.region_id
+JOIN accounts a
+ON s.id = a.sales_rep_id
+JOIN orders o
+ON a.id = o.account_id
+GROUP BY 1,2) t3
+ON t2.region = t3.region AND t2.max = t3.total_amt
+ORDER BY max DESC;
+Q2)
+SELECT region, SUM(total_amt), COUNT(cnt)
+FROM(
+SELECT r.name region, (o.total_amt_usd) total_amt, o.total cnt
+FROM region r
+JOIN sales_reps s
+ON r.id = s.region_id
+JOIN accounts a
+ON s.id = a.sales_rep_id
+JOIN orders o
+ON a.id = o.account_id) t1
+GROUP BY 1
+ORDER BY 2 DESC;
+Q3)
+SELECT COUNT(*)
+FROM(
+SELECT a.name
+FROM orders o
+JOIN accounts a
+ON a.id = o.account_id
+GROUP BY 1
+HAVING SUM(o.total) > (SELECT t1.std_qty
+FROM(
+SELECT a.name accounts, SUM(o.standard_qty) std_qty, SUM(o.total) total
+FROM accounts a
+JOIN orders o
+ON a.id = o.account_id
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 1) t1))t2
+Q4)
+SELECT a.name account, w.channel,COUNT(w.channel) count
+FROM accounts a
+JOIN web_events w
+ON a.id = w.account_id
+GROUP BY 1,2
+HAVING a.name = (
+SELECT t1.account
+FROM(
+SELECT a.name account, SUM(o.total_amt_usd) total
+FROM accounts a
+JOIN orders o
+ON a.id = o.account_id
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 1) t1)
+Q5)
+SELECT t1.account, t1.total/ (t1.max-t1.min) avg
+FROM(
+SELECT a.name account, SUM(o.total_amt_usd) total, MAX(DATE_PART('year',occurred_at)) max,
+MIN(DATE_PART('year', occurred_at)) min
+FROM accounts a
+JOIN orders o
+ON a.id = o.account_id
+GROUP BY 1
+ORDER BY total DESC
+LIMIT 10) t1;
+Q6)
+SELECT t1.account, AVG(t1.total)
+FROM (
+SELECT a.name account, SUM(o.total_amt_usd) total
+FROM accounts a
+JOIN orders o
+ON a.id = o.account_id
+GROUP BY 1
+ORDER BY 2 DESC) t1
+GROUP BY 1
+HAVING AVG(t1.total) > (SELECT AVG(total)
+FROM
+(SELECT a.name account, SUM(o.total_amt_usd) total
+FROM accounts a
+JOIN orders o
+ON a.id = o.account_id
+GROUP BY 1
+ORDER BY 2 DESC)t2)
